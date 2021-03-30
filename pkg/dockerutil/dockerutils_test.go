@@ -5,7 +5,6 @@ import (
 	"github.com/drud/ddev/pkg/exec"
 	"github.com/drud/ddev/pkg/util"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
 	"os"
 	"runtime"
 	"testing"
@@ -264,7 +263,7 @@ func TestComposeWithStreams(t *testing.T) {
 
 	// Use the current actual web container for this, so replace in base docker-compose file
 	composeBase := filepath.Join("testdata", "TestComposeWithStreams", "test-compose-with-streams.yaml")
-	tmp, err := ioutil.TempDir("", "")
+	tmp, err := os.MkdirTemp("", "")
 	assert.NoError(err)
 	realComposeFile := filepath.Join(tmp, "replaced-compose-with-streams.yaml")
 

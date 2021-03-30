@@ -7,7 +7,6 @@ import (
 	"github.com/drud/ddev/pkg/nodeps"
 	"github.com/drud/ddev/pkg/util"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -79,10 +78,10 @@ func TestPlatformPull(t *testing.T) {
 	require.NoError(t, err)
 
 	// Build our platform.yaml from the example file
-	s, err := ioutil.ReadFile(app.GetConfigPath("providers/platform.yaml.example"))
+	s, err := os.ReadFile(app.GetConfigPath("providers/platform.yaml.example"))
 	require.NoError(t, err)
 	x := strings.Replace(string(s), "project_id:", fmt.Sprintf("project_id: "+platformTestSiteID+"\n#project_id:"), 1)
-	err = ioutil.WriteFile(app.GetConfigPath("providers/platform.yaml"), []byte(x), 0666)
+	err = os.WriteFile(app.GetConfigPath("providers/platform.yaml"), []byte(x), 0666)
 	assert.NoError(err)
 	err = app.WriteConfig()
 	require.NoError(t, err)
@@ -152,10 +151,10 @@ func TestPlatformPush(t *testing.T) {
 	require.NoError(t, err)
 
 	// Build our platform.yaml from the example file
-	s, err := ioutil.ReadFile(app.GetConfigPath("providers/platform.yaml.example"))
+	s, err := os.ReadFile(app.GetConfigPath("providers/platform.yaml.example"))
 	require.NoError(t, err)
 	x := strings.Replace(string(s), "project_id:", fmt.Sprintf("project_id: %s\n#project_id:", platformTestSiteID), -1)
-	err = ioutil.WriteFile(app.GetConfigPath("providers/platform.yaml"), []byte(x), 0666)
+	err = os.WriteFile(app.GetConfigPath("providers/platform.yaml"), []byte(x), 0666)
 	assert.NoError(err)
 	err = app.WriteConfig()
 	require.NoError(t, err)
@@ -177,7 +176,7 @@ func TestPlatformPush(t *testing.T) {
 	require.NoError(t, err)
 	fName := tval + ".txt"
 	fContent := []byte(tval)
-	err = ioutil.WriteFile(filepath.Join(siteDir, "sites/default/files", fName), fContent, 0644)
+	err = os.WriteFile(filepath.Join(siteDir, "sites/default/files", fName), fContent, 0644)
 	assert.NoError(err)
 
 	err = app.Push(provider, false, false)

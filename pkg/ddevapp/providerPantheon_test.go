@@ -7,7 +7,6 @@ import (
 	"github.com/drud/ddev/pkg/globalconfig"
 	"github.com/drud/ddev/pkg/nodeps"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -89,10 +88,10 @@ func TestPantheonPull(t *testing.T) {
 	require.NoError(t, err)
 
 	// Build our pantheon.yaml from the example file
-	s, err := ioutil.ReadFile(app.GetConfigPath("providers/pantheon.yaml.example"))
+	s, err := os.ReadFile(app.GetConfigPath("providers/pantheon.yaml.example"))
 	require.NoError(t, err)
 	x := strings.Replace(string(s), "project:", fmt.Sprintf("project: %s\n#project:", pantheonTestSiteID), 1)
-	err = ioutil.WriteFile(app.GetConfigPath("providers/pantheon.yaml"), []byte(x), 0666)
+	err = os.WriteFile(app.GetConfigPath("providers/pantheon.yaml"), []byte(x), 0666)
 	assert.NoError(err)
 	err = app.WriteConfig()
 	require.NoError(t, err)
@@ -194,10 +193,10 @@ func TestPantheonPush(t *testing.T) {
 	require.NoError(t, err)
 
 	// Build our pantheon.yaml from the example file
-	s, err := ioutil.ReadFile(app.GetConfigPath("providers/pantheon.yaml.example"))
+	s, err := os.ReadFile(app.GetConfigPath("providers/pantheon.yaml.example"))
 	require.NoError(t, err)
 	x := strings.Replace(string(s), "project:", fmt.Sprintf("project: %s\n#project:", pantheonTestSiteID), 1)
-	err = ioutil.WriteFile(app.GetConfigPath("providers/pantheon.yaml"), []byte(x), 0666)
+	err = os.WriteFile(app.GetConfigPath("providers/pantheon.yaml"), []byte(x), 0666)
 	assert.NoError(err)
 	err = app.WriteConfig()
 	require.NoError(t, err)
@@ -223,7 +222,7 @@ func TestPantheonPush(t *testing.T) {
 	require.NoError(t, err)
 	fName := tval + ".txt"
 	fContent := []byte(tval)
-	err = ioutil.WriteFile(filepath.Join(siteDir, "sites/default/files", fName), fContent, 0644)
+	err = os.WriteFile(filepath.Join(siteDir, "sites/default/files", fName), fContent, 0644)
 	assert.NoError(err)
 
 	err = app.Push(provider, false, false)
@@ -256,7 +255,7 @@ func setupSSHKey(t *testing.T, privateKey string, expectScriptDir string) error 
 	// Provide an ssh key for `ddev auth ssh`
 	err := os.Mkdir("sshtest", 0755)
 	require.NoError(t, err)
-	err = ioutil.WriteFile(filepath.Join("sshtest", "id_rsa_test"), []byte(privateKey), 0600)
+	err = os.WriteFile(filepath.Join("sshtest", "id_rsa_test"), []byte(privateKey), 0600)
 	require.NoError(t, err)
 	out, err := exec.RunCommand("expect", []string{filepath.Join(expectScriptDir, "ddevauthssh.expect"), DdevBin, "./sshtest"})
 	require.NoError(t, err)

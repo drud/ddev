@@ -2,7 +2,6 @@ package ddevapp
 
 import (
 	"fmt"
-	"io/ioutil"
 
 	"os"
 	"path/filepath"
@@ -116,7 +115,7 @@ func writeTypo3SettingsFile(app *DdevApp) error {
 		return err
 	}
 	contents := []byte(typo3AdditionalConfigTemplate)
-	err = ioutil.WriteFile(filePath, contents, 0644)
+	err = os.WriteFile(filePath, contents, 0644)
 	if err != nil {
 		return err
 	}

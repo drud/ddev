@@ -8,7 +8,6 @@ import (
 	"github.com/drud/ddev/pkg/nodeps"
 	"github.com/drud/ddev/pkg/output"
 	"github.com/drud/ddev/pkg/util"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -54,7 +53,7 @@ func createMagentoSettingsFile(app *DdevApp) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		err = ioutil.WriteFile(app.SiteSettingsPath, content, 0644)
+		err = os.WriteFile(app.SiteSettingsPath, content, 0644)
 		if err != nil {
 			return "", err
 		}
@@ -154,7 +153,7 @@ func createMagento2SettingsFile(app *DdevApp) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		err = ioutil.WriteFile(app.SiteSettingsPath, content, 0644)
+		err = os.WriteFile(app.SiteSettingsPath, content, 0644)
 		if err != nil {
 			return "", err
 		}

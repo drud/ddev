@@ -6,7 +6,7 @@ import (
 	"fmt"
 	asrt "github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -70,7 +70,7 @@ func TestShareCmd(t *testing.T) {
 				}
 				//nolint: errcheck
 				defer resp.Body.Close()
-				body, err := ioutil.ReadAll(resp.Body)
+				body, err := io.ReadAll(resp.Body)
 				assert.NoError(err)
 				assert.Contains(string(body), site.Safe200URIWithExpectation.Expect)
 				urlRead = true

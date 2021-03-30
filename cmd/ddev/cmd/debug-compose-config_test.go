@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -48,7 +48,7 @@ func TestComposeConfigCmd(t *testing.T) {
 
 	// Create a docker-compose.override.yaml
 	overrideFile := filepath.Join(tmpdir, ".ddev", "docker-compose.override.yaml")
-	err = ioutil.WriteFile(overrideFile, []byte(override), 0644)
+	err = os.WriteFile(overrideFile, []byte(override), 0644)
 	assert.NoError(t, err)
 
 	// Ensure ddev debug compose-config includes override values

@@ -15,8 +15,6 @@ import (
 
 	"fmt"
 
-	"io/ioutil"
-
 	"github.com/drud/ddev/pkg/ddevapp"
 	"github.com/drud/ddev/pkg/exec"
 	"github.com/drud/ddev/pkg/testcommon"
@@ -216,7 +214,7 @@ func TestConfigSetValues(t *testing.T) {
 	assert.NoError(err, "error running ddev %v: %v, output=%s", args, err, out)
 
 	configFile := filepath.Join(tmpdir, ".ddev", "config.yaml")
-	configContents, err := ioutil.ReadFile(configFile)
+	configContents, err := os.ReadFile(configFile)
 	if err != nil {
 		t.Errorf("Unable to read %s: %v", configFile, err)
 	}
@@ -271,7 +269,7 @@ func TestConfigSetValues(t *testing.T) {
 	_, err = exec.RunCommand(DdevBin, args)
 	assert.NoError(err)
 
-	configContents, err = ioutil.ReadFile(configFile)
+	configContents, err = os.ReadFile(configFile)
 	assert.NoError(err, "Unable to read %s: %v", configFile, err)
 
 	app = &ddevapp.DdevApp{}
@@ -306,7 +304,7 @@ func TestConfigSetValues(t *testing.T) {
 	_, err = exec.RunCommand(DdevBin, args)
 	assert.NoError(err)
 
-	configContents, err = ioutil.ReadFile(configFile)
+	configContents, err = os.ReadFile(configFile)
 	assert.NoError(err, "Unable to read %s: %v", configFile, err)
 
 	app = &ddevapp.DdevApp{}

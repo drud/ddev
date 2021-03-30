@@ -3,7 +3,6 @@ package ddevapp
 import (
 	"embed"
 	"github.com/drud/ddev/pkg/fileutil"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -35,7 +34,7 @@ func CopyEmbedAssets(fsys embed.FS, sourceDir string, targetDir string) error {
 				if err != nil {
 					return err
 				}
-				err = ioutil.WriteFile(localPath, content, 0755)
+				err = os.WriteFile(localPath, content, 0755)
 				if err != nil {
 					return err
 				}

@@ -3,7 +3,6 @@ package ddevapp_test
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"net/url"
 	"os"
@@ -1843,7 +1842,7 @@ func TestDdevImportFilesDir(t *testing.T) {
 	app := &ddevapp.DdevApp{}
 
 	// Create a dummy directory to test non-archive imports
-	importDir, err := ioutil.TempDir("", t.Name())
+	importDir, err := os.MkdirTemp("", t.Name())
 	assert.NoError(err)
 	fileNames := make([]string, 0)
 	for i := 0; i < 5; i++ {
@@ -1851,7 +1850,7 @@ func TestDdevImportFilesDir(t *testing.T) {
 		fileNames = append(fileNames, fileName)
 
 		fullPath := filepath.Join(importDir, fileName)
-		err = ioutil.WriteFile(fullPath, []byte(fileName), 0644)
+		err = os.WriteFile(fullPath, []byte(fileName), 0644)
 		assert.NoError(err)
 	}
 
@@ -1875,12 +1874,12 @@ func TestDdevImportFilesDir(t *testing.T) {
 
 		// Confirm contents of destination dir after import
 		absUploadDir := filepath.Join(app.AppRoot, app.Docroot, app.GetUploadDir())
-		uploadedFiles, err := ioutil.ReadDir(absUploadDir)
+		uploadedFilesDirEntrySlice, err := os.ReadDir(absUploadDir)
 		assert.NoError(err)
 
 		uploadedFilesMap := map[string]bool{}
-		for _, uploadedFile := range uploadedFiles {
-			uploadedFilesMap[filepath.Base(uploadedFile.Name())] = true
+		for _, de := range uploadedFilesDirEntrySlice {
+			uploadedFilesMap[filepath.Base(de.Name())] = true
 		}
 
 		for _, expectedFile := range fileNames {
@@ -1970,9 +1969,9 @@ func TestDdevImportFilesCustomUploadDir(t *testing.T) {
 			assert.NoError(err)
 
 			// Ensure upload dir isn't empty
-			fileInfoSlice, err := ioutil.ReadDir(absUploadDir)
+			dirEntrySlice, err := os.ReadDir(absUploadDir)
 			assert.NoError(err)
-			assert.NotEmpty(fileInfoSlice)
+			assert.NotEmpty(dirEntrySlice)
 		}
 
 		if site.FilesZipballURL != "" {
@@ -1982,9 +1981,9 @@ func TestDdevImportFilesCustomUploadDir(t *testing.T) {
 			assert.NoError(err)
 
 			// Ensure upload dir isn't empty
-			fileInfoSlice, err := ioutil.ReadDir(absUploadDir)
+			dirEntrySlice, err := os.ReadDir(absUploadDir)
 			assert.NoError(err)
-			assert.NotEmpty(fileInfoSlice)
+			assert.NotEmpty(dirEntrySlice)
 		}
 
 		if site.FullSiteTarballURL != "" && site.FullSiteArchiveExtPath != "" {
@@ -1994,9 +1993,9 @@ func TestDdevImportFilesCustomUploadDir(t *testing.T) {
 			assert.NoError(err)
 
 			// Ensure upload dir isn't empty
-			fileInfoSlice, err := ioutil.ReadDir(absUploadDir)
+			dirEntrySlice, err := os.ReadDir(absUploadDir)
 			assert.NoError(err)
-			assert.NotEmpty(fileInfoSlice)
+			assert.NotEmpty(dirEntrySlice)
 		}
 
 		runTime()

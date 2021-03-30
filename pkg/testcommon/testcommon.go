@@ -6,7 +6,7 @@ import (
 	"github.com/drud/ddev/pkg/ddevapp"
 	"github.com/drud/ddev/pkg/globalconfig"
 	"github.com/drud/ddev/pkg/output"
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -174,7 +174,7 @@ func OsTempDir() (string, error) {
 func CreateTmpDir(prefix string) string {
 	baseTmpDir := filepath.Join(homedir.Get(), "tmp", "ddevtest")
 	_ = os.MkdirAll(baseTmpDir, 0755)
-	fullPath, err := ioutil.TempDir(baseTmpDir, prefix)
+	fullPath, err := os.MkdirTemp(baseTmpDir, prefix)
 	if err != nil {
 		log.Fatalf("Failed to create temp directory %s, err=%v", fullPath, err)
 	}
@@ -365,7 +365,7 @@ func GetLocalHTTPResponse(t *testing.T, rawurl string, timeoutSecsAry ...int) (s
 
 	//nolint: errcheck
 	defer resp.Body.Close()
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", resp, fmt.Errorf("unable to ReadAll resp.body: %v", err)
 	}

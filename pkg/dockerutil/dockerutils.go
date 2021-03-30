@@ -9,7 +9,6 @@ import (
 	"github.com/drud/ddev/pkg/util"
 	"github.com/drud/ddev/pkg/version"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -876,7 +875,7 @@ func CopyToVolume(sourcePath string, volumeName string, targetSubdir string, uid
 	// nolint: errcheck
 	defer RemoveContainer(containerID, 0)
 
-	tmpTar, err := ioutil.TempFile("", "CopyToVolume")
+	tmpTar, err := os.CreateTemp("", "CopyToVolume")
 	if err != nil {
 		log.Fatal(err)
 	}

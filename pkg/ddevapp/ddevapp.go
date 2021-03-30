@@ -9,7 +9,6 @@ import (
 	"github.com/lextoumbourou/goodhosts"
 	"github.com/mattn/go-isatty"
 	"golang.org/x/crypto/ssh/terminal"
-	"io/ioutil"
 	"net"
 	"os"
 	"path/filepath"
@@ -421,7 +420,7 @@ func (app *DdevApp) ImportDB(imPath string, extPath string, progress bool, noDro
 		targetDB = "db"
 	}
 	var extPathPrompt bool
-	dbPath, err := ioutil.TempDir(filepath.Dir(app.ConfigPath), ".importdb")
+	dbPath, err := os.MkdirTemp(filepath.Dir(app.ConfigPath), ".importdb")
 	//nolint: errcheck
 	defer os.RemoveAll(dbPath)
 	if err != nil {
@@ -1624,21 +1623,31 @@ func (app *DdevApp) ListSnapshots() ([]string, error) {
 		return snapshots, nil
 	}
 
-	files, err := ioutil.ReadDir(snapshotDir)
+	dirEntrySlice, err := os.ReadDir(snapshotDir)
 	if err != nil {
 		return snapshots, err
+	}
+
+	// Get the mod times aligned with the DirEntry slice for comparison below.
+	dirEntryModTimeSlice := make([]time.Time, len(dirEntrySlice))
+	for i, de := range dirEntrySlice {
+		de, err := de.Info()
+		if err != nil {
+			return snapshots, err
+		}
+		dirEntryModTimeSlice[i] = de.ModTime()
 	}
 
 	// Sort snapshots by last modification time
 	// we need that to detect the latest snapshot
 	// first snapshot is the latest
-	sort.Slice(files, func(i, j int) bool {
-		return files[i].ModTime().After(files[j].ModTime())
+	sort.Slice(dirEntrySlice, func(i, j int) bool {
+		return dirEntryModTimeSlice[i].After(dirEntryModTimeSlice[j])
 	})
 
-	for _, f := range files {
-		if f.IsDir() {
-			snapshots = append(snapshots, f.Name())
+	for _, de := range dirEntrySlice {
+		if de.IsDir() {
+			snapshots = append(snapshots, de.Name())
 		}
 	}
 

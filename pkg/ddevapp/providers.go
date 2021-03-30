@@ -3,7 +3,7 @@ package ddevapp
 import (
 	"github.com/drud/ddev/pkg/fileutil"
 	"github.com/drud/ddev/pkg/nodeps"
-	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -25,13 +25,13 @@ func (app *DdevApp) GetValidProviders() ([]string, error) {
 		return providers, nil
 	}
 
-	dir, err := ioutil.ReadDir(pPath)
+	dirEntrySlice, err := os.ReadDir(pPath)
 	if err != nil {
 		return providers, err
 	}
-	for _, fi := range dir {
-		if strings.HasSuffix(fi.Name(), ".yaml") {
-			providers = append(providers, strings.TrimSuffix(fi.Name(), ".yaml"))
+	for _, de := range dirEntrySlice {
+		if strings.HasSuffix(de.Name(), ".yaml") {
+			providers = append(providers, strings.TrimSuffix(de.Name(), ".yaml"))
 		}
 	}
 	return providers, nil

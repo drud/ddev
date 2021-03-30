@@ -7,7 +7,6 @@ import (
 	"github.com/drud/ddev/pkg/nodeps"
 	"github.com/mitchellh/go-homedir"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -194,7 +193,7 @@ func TestWriteDockerComposeYaml(t *testing.T) {
 	assert.False(fileinfo.IsDir())
 	assert.Equal(fileinfo.Name(), filepath.Base(app.DockerComposeYAMLPath()))
 
-	composeBytes, err := ioutil.ReadFile(app.DockerComposeYAMLPath())
+	composeBytes, err := os.ReadFile(app.DockerComposeYAMLPath())
 	assert.NoError(err)
 	contentString := string(composeBytes)
 	assert.Contains(contentString, app.Type)

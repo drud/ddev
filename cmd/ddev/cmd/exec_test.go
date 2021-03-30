@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -88,7 +88,7 @@ func TestCmdExec(t *testing.T) {
 	assert.NoError(err)
 	require.FileExists(t, filepath.Join(site.Dir, filename))
 
-	content, err := ioutil.ReadFile(filepath.Join(site.Dir, filename))
+	content, err := os.ReadFile(filepath.Join(site.Dir, filename))
 	assert.NoError(err)
 	assert.Equal("This file was piped into ddev exec", string(content))
 }
