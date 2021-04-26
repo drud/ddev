@@ -317,8 +317,11 @@ func (app *DdevApp) Describe(short bool) (map[string]interface{}, error) {
 				if svc, ok = v.(map[interface{}]interface{}); !ok {
 					continue
 				}
-
 				extraServices[serviceName] = map[string]string{}
+
+				extraServices[serviceName]["version"] = svc["image"].(string)
+
+				extraServices[serviceName]["status"], _ = dockerutil.GetContainerStateByName(svc["container_name"].(string))
 
 				if env, ok := svc["environment"].(map[interface{}]interface{}); ok {
 					// Extract HTTP_EXPOSE and HTTPS_EXPOSE for additional info
