@@ -25,9 +25,6 @@ var (
 
 // DescribeCommand represents the `ddev config` command
 var DescribeCommand = &cobra.Command{
-	Use:     "describe [projectname]",
-	Aliases: []string{"status", "st", "desc"},
-	Short:   "Get a detailed description of a running ddev project.",
 	Use:   "describe [projectname] [--service=name]",
 	Aliases: []string{"status", "st", "desc"},
 	Short: "Get a detailed description of a running ddev project.",
