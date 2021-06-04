@@ -25,9 +25,9 @@ var (
 
 // DescribeCommand represents the `ddev config` command
 var DescribeCommand = &cobra.Command{
-	Use:   "describe [projectname] [--service=name]",
+	Use:     "describe [projectname] [--service=name]",
 	Aliases: []string{"status", "st", "desc"},
-	Short: "Get a detailed description of a running ddev project.",
+	Short:   "Get a detailed description of a running ddev project.",
 	Long: `Get a detailed description of a running ddev project. Describe provides basic
 information about a ddev project, including its name, location, url, and status.
 It also provides details for MySQL connections, and connection information for
