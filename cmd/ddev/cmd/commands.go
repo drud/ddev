@@ -296,7 +296,7 @@ func findDirectivesInScriptCommand(script string) map[string]string {
 		if strings.HasPrefix(line, "## ") && strings.Contains(line, ":") {
 			line = strings.Replace(line, "## ", "", 1)
 			parts := strings.SplitN(line, ":", 2)
-			parts[1] = strings.Trim(parts[1], " \"'")
+			parts[1] = strings.Trim(parts[1], " ")
 			directives[parts[0]] = parts[1]
 		}
 	}
