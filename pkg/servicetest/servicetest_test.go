@@ -87,7 +87,10 @@ func TestServices(t *testing.T) {
 	require.Len(t, desc["extra_services"], expectedServiceCount)
 
 	// A volume should have been created for solr (only)
-	assert.True(dockerutil.VolumeExists(strings.ToLower("ddev-" + app.Name + "_" + "solr")))
+	// The volume name may be as is (compose-cli/docker-compose v2)
+	// or it may be lowercased (docker-compose v1)
+	volName := fmt.Sprintf("ddev-%s_solr", app.Name)
+	assert.True(dockerutil.VolumeExists(volName) || dockerutil.VolumeExists(strings.ToLower(volName)))
 
 	err = app.Stop(true, false)
 	assert.NoError(err)

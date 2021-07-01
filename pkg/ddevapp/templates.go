@@ -205,6 +205,7 @@ volumes:
 
   {{ if and .NFSMountEnabled (not .NoProjectMount) }}
   nfsmount:
+    name: ddev-${DDEV_SITENAME}_nfsmount
     driver: local
     driver_opts:
       type: nfs
@@ -482,6 +483,7 @@ const DdevSSHAuthTemplate = `version: '{{ .compose_version }}'
 
 volumes:
   dot_ssh:
+    name: "ddev-${DDEV_SITENAME}_dot_ssh"
   socket_dir:
     name: ddev-ssh-agent_socket_dir
 
