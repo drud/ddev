@@ -233,18 +233,20 @@ func TestComposeCmd(t *testing.T) {
 
 	composeFiles := []string{filepath.Join("testdata", "docker-compose.yml")}
 
-	stdout, _, err := ComposeCmd(composeFiles, "config", "--services")
+	stdout, stderr, err := ComposeCmd(composeFiles, "config", "--services")
 	assert.NoError(err)
 	assert.Contains(stdout, "web")
 	assert.Contains(stdout, "db")
+	assert.Contains(stderr, "Defaulting to a blank string")
 
 	composeFiles = append(composeFiles, filepath.Join("testdata", "docker-compose.override.yml"))
 
-	stdout, _, err = ComposeCmd(composeFiles, "config", "--services")
+	stdout, stderr, err = ComposeCmd(composeFiles, "config", "--services")
 	assert.NoError(err)
 	assert.Contains(stdout, "web")
 	assert.Contains(stdout, "db")
 	assert.Contains(stdout, "foo")
+	assert.Contains(stderr, "Defaulting to a blank string")
 
 	composeFiles = []string{"invalid.yml"}
 	_, _, err = ComposeCmd(composeFiles, "config", "--services")
