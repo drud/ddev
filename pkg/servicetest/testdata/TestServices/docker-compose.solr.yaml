@@ -87,4 +87,3 @@ volumes:
   # The persistent volume should have the same name as the service so it can be deleted
   # when the project is deleted.
   solr:
-    name: "ddev-${DDEV_SITENAME}_solr"

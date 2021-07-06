@@ -949,12 +949,7 @@ func Exec(containerID string, command string) (string, string, error) {
 	return stdout.String(), stderr.String(), execErr
 }
 
-// Get a Docker Volume name, which may have capitalized portions in
-// docker-compose v2, but not in docker-compose v1
+// GetDockerVolumeName returns the lowercased volume name
 func GetDockerVolumeName(name string) string {
-	dockerComposeVersion, _ := version.GetDockerComposeVersion()
-	if strings.Compare(dockerComposeVersion, "1") > 0 {
-		return name
-	}
 	return strings.ToLower(name)
 }
