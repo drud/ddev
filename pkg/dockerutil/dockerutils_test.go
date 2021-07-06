@@ -298,12 +298,8 @@ func TestComposeWithStreams(t *testing.T) {
 	err = ComposeWithStreams(composeFiles, os.Stdin, os.Stderr, os.Stdout, "exec", "-T", "web", "ls", "-d", "xx", "/var/run/apache2")
 	assert.Error(err)
 	output = stdout()
-	if !IsDockerComposeV2() {
-		assert.Contains(output, "ls: cannot access 'xx': No such file or directory")
-	} else {
-		// See https://github.com/docker/compose-cli/issues/1873
-		t.Log("Running with docker-compose v2+, so stdout/stderr streams are not properly separated")
-	}
+	assert.Contains(output, "ls: cannot access 'xx': No such file or directory")
+
 	// Flip stdout and stderr and create an error and normal stdout. We should see only the success captured in stdout
 	stdout = util.CaptureStdOut()
 	err = ComposeWithStreams(composeFiles, os.Stdin, os.Stdout, os.Stderr, "exec", "-T", "web", "ls", "-d", "xx", "/var/run/apache2")
