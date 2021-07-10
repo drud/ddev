@@ -2,6 +2,7 @@ package ddevapp
 
 import (
 	"github.com/drud/ddev/pkg/output"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -225,6 +226,10 @@ func (p *Provider) UploadDB() error {
 		return nil
 	}
 
+	if os.Getenv("DDEV_ALLOW_PUSH") != "true" {
+		return errors.Errorf("You must set the environment variable DDEV_ALLOW_PUSH=true to allow DB push")
+	}
+
 	err := p.app.ExportDB(p.app.GetConfigPath(".downloads/db.sql.gz"), true, "")
 	if err != nil {
 		return err
@@ -251,13 +256,17 @@ func (p *Provider) UploadFiles() error {
 		return nil
 	}
 
+	if os.Getenv("DDEV_ALLOW_PUSH") != "true" {
+		return errors.Errorf("You must set the enviorement DDEV_ALLOW_PUSH=true to allow Files push")
+	}
+
 	s := p.FilesPushCommand.Service
 	if s == "" {
 		s = "web"
 	}
 	err := p.app.ExecOnHostOrService(s, p.injectedEnvironment()+"; "+p.FilesPushCommand.Command)
 	if err != nil {
-		util.Failed("Failed to exec %s on %s: %v", p.FilesPushCommand.Command, s, err)
+		return errors.Errorf("Failed to exec %s on %s: %v", p.FilesPushCommand.Command, s, err)
 	}
 	return nil
 }

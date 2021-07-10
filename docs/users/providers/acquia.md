@@ -24,7 +24,7 @@ ddev's Acquia integration pulls database and files from an existing project into
 7. Your project must include drush; `ddev composer require drush/drush` if it isn't there already.
 8. `ddev restart`
 9. Use `ddev pull acquia` to pull the project database and files.
-10. Optionally use `ddev push acquia` to push local files and database to Aquia. Note that `ddev push` is a command that can potentially damage your production site, so this is not recommended.
+10. Optionally use `ddev push acquia` to push local files and database to Aquia. Note that `ddev push` is a command that can potentially damage your production site, so this is not recommended. If you want to enable push, you must set the environment variable DDEV_ALLOW_PUSH=true in your .ddev/config.yaml or ~/.ddev/global_config.yaml.
 
 ### Usage
 

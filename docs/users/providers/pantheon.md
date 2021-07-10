@@ -35,4 +35,4 @@ If you have ddev installed, and have an active Pantheon account with an active s
 
 10. Run `ddev pull pantheon`. The ddev environment  download the Pantheon database and files, and import the database and files into the ddev environment. You should now be able to access the project locally.
 
-11. Optionally use `ddev push pantheon` to push local files and database to Pantheon. Note that `ddev push` is a command that can potentially damage your production site, so this is not recommended.
+11. Optionally use `ddev push pantheon` to push local files and database to Pantheon. Note that `ddev push` is a command that can potentially damage your production site, so this is not recommended. If you want to enable push, you must set the environment variable DDEV_ALLOW_PUSH=true in your .ddev/config.yaml or ~/.ddev/global_config.yaml.
