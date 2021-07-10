@@ -90,7 +90,7 @@ github.com/google/go-querystring/query
 # github.com/google/uuid v0.0.0-20161128191214-064e2069ce9c
 ## explicit
 github.com/google/uuid
-# github.com/gosuri/uitable v0.0.0-20160404203958-36ee7e946282
+# github.com/gosuri/uitable v0.0.4
 ## explicit
 github.com/gosuri/uitable
 github.com/gosuri/uitable/util/strutil
