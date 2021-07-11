@@ -5,7 +5,7 @@
 ## Usage: heidisql
 ## Example: "ddev heidisql"
 ## OSTypes: windows,wsl2
-## HostBinaryExists: "/mnt/c/Program Files/HeidiSQL/heidisql.exe,C:\Program Files\HeidiSQL\Heidisql.exe"
+## HostBinaryExists: /mnt/c/Program Files/HeidiSQL/heidisql.exe,C:\Program Files\HeidiSQL\Heidisql.exe
 
 arguments="--host=127.0.0.1 --port=${DDEV_HOST_DB_PORT} --user=root --password=root --description=${DDEV_SITENAME}"
 
