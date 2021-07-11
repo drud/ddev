@@ -3,7 +3,6 @@ package fileutil_test
 import (
 	"fmt"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -137,7 +136,7 @@ func TestListFilesInDir(t *testing.T) {
 // TestReplaceStringInFile tests the ReplaceStringInFile utility function.
 func TestReplaceStringInFile(t *testing.T) {
 	assert := asrt.New(t)
-	tmp, err := ioutil.TempDir("", "")
+	tmp, err := os.MkdirTemp("", "")
 	assert.NoError(err)
 	newFilePath := filepath.Join(tmp, "newfile.txt")
 	err = fileutil.ReplaceStringInFile("some needle we're looking for", "specialJUNKPattern", "testdata/fgrep_has_positive_contents.txt", newFilePath)
@@ -191,7 +190,7 @@ func TestReplaceSimulatedXsymSymlinks(t *testing.T) {
 		assert.NoError(err)
 		if err == nil && fi != nil && !fi.IsDir() {
 			// Read the symlink as a file. It should resolve with the actual content of target
-			contents, err := ioutil.ReadFile(link.LinkLocation)
+			contents, err := os.ReadFile(link.LinkLocation)
 			assert.NoError(err)
 			expectedContent := "textfile " + filepath.Base(link.LinkTarget) + "\n"
 			assert.Equal(expectedContent, string(contents))

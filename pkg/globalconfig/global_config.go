@@ -8,7 +8,6 @@ import (
 	"github.com/mitchellh/go-homedir"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"net"
 	"os"
 	"os/exec"
@@ -93,7 +92,7 @@ func ReadGlobalConfig() error {
 		}
 	}
 
-	source, err := ioutil.ReadFile(globalConfigFile)
+	source, err := os.ReadFile(globalConfigFile)
 	if err != nil {
 		return fmt.Errorf("Unable to read ddev global config file %s: %v", source, err)
 	}
@@ -214,7 +213,7 @@ func WriteGlobalConfig(config GlobalConfig) error {
 `
 	cfgbytes = append(cfgbytes, instructions...)
 
-	err = ioutil.WriteFile(GetGlobalConfigPath(), cfgbytes, 0644)
+	err = os.WriteFile(GetGlobalConfigPath(), cfgbytes, 0644)
 	if err != nil {
 		return err
 	}

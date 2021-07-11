@@ -7,7 +7,6 @@ import (
 	"github.com/drud/ddev/pkg/globalconfig"
 	"github.com/drud/ddev/pkg/nodeps"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -96,10 +95,10 @@ func TestAcquiaPull(t *testing.T) {
 	require.NoError(t, err)
 
 	// Build our acquia.yaml from the example file
-	s, err := ioutil.ReadFile(app.GetConfigPath("providers/acquia.yaml.example"))
+	s, err := os.ReadFile(app.GetConfigPath("providers/acquia.yaml.example"))
 	require.NoError(t, err)
 	x := strings.Replace(string(s), "project_id:", fmt.Sprintf("project_id: %s\n#project_id:", acquiaTestSite), -1)
-	err = ioutil.WriteFile(app.GetConfigPath("providers/acquia.yaml"), []byte(x), 0666)
+	err = os.WriteFile(app.GetConfigPath("providers/acquia.yaml"), []byte(x), 0666)
 	assert.NoError(err)
 	err = app.WriteConfig()
 	require.NoError(t, err)
@@ -194,10 +193,10 @@ func TestAcquiaPush(t *testing.T) {
 	require.NoError(t, err)
 
 	// Build our acquia.yaml from the example file
-	s, err := ioutil.ReadFile(app.GetConfigPath("providers/acquia.yaml.example"))
+	s, err := os.ReadFile(app.GetConfigPath("providers/acquia.yaml.example"))
 	require.NoError(t, err)
 	x := strings.Replace(string(s), "project_id:", fmt.Sprintf("project_id: %s\n#project_id:", acquiaTestSite), -1)
-	err = ioutil.WriteFile(app.GetConfigPath("providers/acquia.yaml"), []byte(x), 0666)
+	err = os.WriteFile(app.GetConfigPath("providers/acquia.yaml"), []byte(x), 0666)
 	assert.NoError(err)
 	err = app.WriteConfig()
 	require.NoError(t, err)
@@ -223,7 +222,7 @@ func TestAcquiaPush(t *testing.T) {
 	require.NoError(t, err)
 	fName := tval + ".txt"
 	fContent := []byte(tval)
-	err = ioutil.WriteFile(filepath.Join(siteDir, "sites/default/files", fName), fContent, 0644)
+	err = os.WriteFile(filepath.Join(siteDir, "sites/default/files", fName), fContent, 0644)
 	assert.NoError(err)
 
 	err = app.Push(provider, false, false)

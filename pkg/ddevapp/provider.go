@@ -2,7 +2,6 @@ package ddevapp
 
 import (
 	"github.com/drud/ddev/pkg/output"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -324,7 +323,7 @@ func (p *Provider) Write(configPath string) error {
 
 // Read generic provider configuration from a specified location on disk.
 func (p *Provider) Read(configPath string) error {
-	source, err := ioutil.ReadFile(configPath)
+	source, err := os.ReadFile(configPath)
 	if err != nil {
 		return err
 	}

@@ -4,7 +4,6 @@ import (
 	"github.com/drud/ddev/pkg/dockerutil"
 	"github.com/drud/ddev/pkg/nodeps"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
@@ -52,12 +51,12 @@ func TestLocalfilePull(t *testing.T) {
 	require.NoError(t, err)
 
 	// Build our localfile.yaml from the example file
-	s, err := ioutil.ReadFile(app.GetConfigPath("providers/localfile.yaml.example"))
+	s, err := os.ReadFile(app.GetConfigPath("providers/localfile.yaml.example"))
 	require.NoError(t, err)
 	x := strings.Replace(string(s), "~/Dropbox", path.Join(dockerutil.MassageWindowsHostMountpoint(testDir), "testdata", t.Name()), -1)
 	appRoot := dockerutil.MassageWindowsHostMountpoint(app.AppRoot)
 	x = strings.Replace(x, "/full/path/to/project/root", appRoot, -1)
-	err = ioutil.WriteFile(app.GetConfigPath("providers/localfile.yaml"), []byte(x), 0666)
+	err = os.WriteFile(app.GetConfigPath("providers/localfile.yaml"), []byte(x), 0666)
 	assert.NoError(err)
 	err = app.WriteConfig()
 	require.NoError(t, err)

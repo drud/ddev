@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -90,23 +89,28 @@ func CopyDir(src string, dst string) error {
 		return err
 	}
 
-	entries, err := ioutil.ReadDir(src)
+	dirEntrySlice, err := os.ReadDir(src)
 	if err != nil {
 		return err
 	}
 
-	for _, entry := range entries {
-		srcPath := filepath.Join(src, entry.Name())
-		dstPath := filepath.Join(dst, entry.Name())
+	for _, de := range dirEntrySlice {
 
-		if entry.IsDir() {
+		srcPath := filepath.Join(src, de.Name())
+		dstPath := filepath.Join(dst, de.Name())
+
+		if de.IsDir() {
 			err = CopyDir(srcPath, dstPath)
 			if err != nil {
 				return err
 			}
 		} else {
+			deInfo, err := de.Info()
+			if err != nil {
+				return err
+			}
 			err = CopyFile(srcPath, dstPath)
-			if err != nil && entry.Mode()&os.ModeSymlink != 0 {
+			if err != nil && deInfo.Mode()&os.ModeSymlink != 0 {
 				output.UserOut.Warnf("failed to copy symlink %s, skipping...\n", srcPath)
 				continue
 			}
@@ -180,7 +184,7 @@ func PurgeDirectory(path string) error {
 // It should only be used against very modest sized files, as the entire file is read
 // into a string.
 func FgrepStringInFile(fullPath string, needle string) (bool, error) {
-	fullFileBytes, err := ioutil.ReadFile(fullPath)
+	fullFileBytes, err := os.ReadFile(fullPath)
 	if err != nil {
 		return false, fmt.Errorf("failed to open file %s, err:%v ", fullPath, err)
 	}
@@ -191,13 +195,13 @@ func FgrepStringInFile(fullPath string, needle string) (bool, error) {
 // ListFilesInDir returns an array of files found in a directory
 func ListFilesInDir(path string) ([]string, error) {
 	var fileList []string
-	files, err := ioutil.ReadDir(path)
+	dirEntrySlice, err := os.ReadDir(path)
 	if err != nil {
 		return fileList, err
 	}
 
-	for _, f := range files {
-		fileList = append(fileList, f.Name())
+	for _, de := range dirEntrySlice {
+		fileList = append(fileList, de.Name())
 	}
 	return fileList, nil
 }
@@ -205,13 +209,13 @@ func ListFilesInDir(path string) ([]string, error) {
 // ListFilesInDirFullPath returns an array of full path of files found in a directory
 func ListFilesInDirFullPath(path string) ([]string, error) {
 	var fileList []string
-	files, err := ioutil.ReadDir(path)
+	dirEntrySlice, err := os.ReadDir(path)
 	if err != nil {
 		return fileList, err
 	}
 
-	for _, f := range files {
-		fileList = append(fileList, filepath.Join(path, f.Name()))
+	for _, de := range dirEntrySlice {
+		fileList = append(fileList, filepath.Join(path, de.Name()))
 	}
 	return fileList, nil
 }
@@ -226,7 +230,7 @@ func RandomFilenameBase() string {
 
 // ReplaceStringInFile takes search and replace strings, an original path, and a dest path, returns error
 func ReplaceStringInFile(searchString string, replaceString string, origPath string, destPath string) error {
-	input, err := ioutil.ReadFile(origPath)
+	input, err := os.ReadFile(origPath)
 	if err != nil {
 		return err
 	}
@@ -234,7 +238,7 @@ func ReplaceStringInFile(searchString string, replaceString string, origPath str
 	output := bytes.Replace(input, []byte(searchString), []byte(replaceString), -1)
 
 	// nolint: revive
-	if err = ioutil.WriteFile(destPath, output, 0666); err != nil {
+	if err = os.WriteFile(destPath, output, 0666); err != nil {
 		return err
 	}
 	return nil
@@ -255,7 +259,7 @@ func IsSameFile(path1 string, path2 string) (bool, error) {
 
 // ReadFileIntoString just gets the contents of file into string
 func ReadFileIntoString(path string) (string, error) {
-	bytes, err := ioutil.ReadFile(path)
+	bytes, err := os.ReadFile(path)
 	if err != nil {
 		return "", err
 	}
@@ -294,7 +298,7 @@ func FindSimulatedXsymSymlinks(basePath string) ([]XSymContents, error) {
 		//TODO: Skip a directory named .git? Skip other arbitrary dirs or files?
 		if !info.IsDir() {
 			if info.Size() == 1067 {
-				contents, err := ioutil.ReadFile(path)
+				contents, err := os.ReadFile(path)
 				if err != nil {
 					return err
 				}

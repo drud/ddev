@@ -8,8 +8,6 @@ import (
 
 	"os"
 
-	"io/ioutil"
-
 	"fmt"
 
 	"time"
@@ -60,7 +58,7 @@ func TestWriteSettings(t *testing.T) {
 	assert.NoError(err)
 
 	// TYPO3 wants LocalConfiguration.php to exist in the repo ahead of time.
-	err = ioutil.WriteFile(filepath.Join(dir, app.Docroot, "typo3conf", "LocalConfiguration.php"), []byte("<?php\n"), 0644)
+	err = os.WriteFile(filepath.Join(dir, app.Docroot, "typo3conf", "LocalConfiguration.php"), []byte("<?php\n"), 0644)
 	assert.NoError(err)
 
 	for apptype, settingsRelativePath := range expectations {
@@ -203,7 +201,7 @@ func TestDrupalBackdropIncludeSettingsDdevInExistingSettingsFile(t *testing.T) {
 
 		// Create a settings.php that does not include settings.ddev.php
 		originalContents := "// this file is not empty\n"
-		err = ioutil.WriteFile(expectedSettingsLocation, []byte(originalContents), 0644)
+		err = os.WriteFile(expectedSettingsLocation, []byte(originalContents), 0644)
 		assert.NoError(err)
 
 		// Invoke the settings file creation process

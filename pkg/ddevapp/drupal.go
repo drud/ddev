@@ -8,7 +8,6 @@ import (
 	"github.com/drud/ddev/pkg/output"
 	"github.com/drud/ddev/pkg/util"
 
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -249,7 +248,7 @@ func writeDrupalSettingsFile(filePath string, appType string) error {
 	}
 
 	// Create file
-	err = ioutil.WriteFile(filePath, content, 0755)
+	err = os.WriteFile(filePath, content, 0755)
 	if err != nil {
 		return err
 	}
@@ -497,7 +496,7 @@ if (getenv('IS_DDEV_PROJECT') == 'true') {
 		return err
 	}
 
-	err := ioutil.WriteFile(filePath, drushContents, 0666)
+	err := os.WriteFile(filePath, drushContents, 0666)
 	if err != nil {
 		return err
 	}
@@ -713,7 +712,7 @@ func settingsHasInclude(drupalConfig *DrupalSettings, siteSettingsPath string) (
 // file, which contains ddev-specific configuration.
 func appendIncludeToDrupalSettingsFile(siteSettingsPath string, appType string) error {
 	// Check if file is empty
-	contents, err := ioutil.ReadFile(siteSettingsPath)
+	contents, err := os.ReadFile(siteSettingsPath)
 	if err != nil {
 		return err
 	}

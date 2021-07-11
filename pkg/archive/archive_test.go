@@ -1,7 +1,6 @@
 package archive_test
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -63,7 +62,7 @@ func TestUnarchive(t *testing.T) {
 func TestArchiveTar(t *testing.T) {
 	assert := asrt.New(t)
 	pwd, _ := os.Getwd()
-	tarballFile, err := ioutil.TempFile("", t.Name())
+	tarballFile, err := os.CreateTemp("", t.Name())
 	assert.NoError(err)
 
 	err = archive.Tar(filepath.Join(pwd, "testdata", t.Name()), tarballFile.Name())

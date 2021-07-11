@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"github.com/drud/ddev/pkg/output"
 	"io"
-	"io/ioutil"
 	"os"
 )
 
@@ -66,7 +65,7 @@ func CaptureStdOut() func() string {
 func CaptureOutputToFile() (func() string, error) {
 	oldStdout := os.Stdout // keep backup of the real stdout
 	oldStderr := os.Stderr
-	f, err := ioutil.TempFile("", "CaptureOutputToFile")
+	f, err := os.CreateTemp("", "CaptureOutputToFile")
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +76,7 @@ func CaptureOutputToFile() (func() string, error) {
 		_ = f.Close()
 		os.Stdout = oldStdout // restoring the real stdout
 		os.Stderr = oldStderr
-		out, _ := ioutil.ReadFile(f.Name())
+		out, _ := os.ReadFile(f.Name())
 		_ = os.RemoveAll(f.Name())
 		return string(out)
 	}, nil
