@@ -948,3 +948,8 @@ func Exec(containerID string, command string) (string, string, error) {
 
 	return stdout.String(), stderr.String(), execErr
 }
+
+// GetDockerVolumeName returns the lowercased volume name
+func GetDockerVolumeName(name string) string {
+	return strings.ToLower(name)
+}
