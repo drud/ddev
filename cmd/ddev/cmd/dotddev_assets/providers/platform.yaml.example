@@ -16,6 +16,9 @@
 # 5. In your project's .ddev/providers directory, copy platform.yaml.example to platform.yaml and edit the `project_id` and `environment_name`.
 # 6. Run `ddev pull platform`. After you agree to the prompt, the current upstream database and files will be downloaded.
 # 7. Optionally use `ddev push platform` to push local files and database to platform.sh. Note that `ddev push` is a command that can potentially damage your production site, so this is not recommended.
+
+# Warning for Apple M1 Users: There is currently a bug in the linux `platform` command (or its dependencies) which causes it to SEGFAULT in normal use. As a result, you can't run `ddev pull platform` on an M1 machine at this time.
+
 # Debugging: Use `ddev exec platform` to see what platform.sh knows about
 # your configuration and whether it's working correctly.
 

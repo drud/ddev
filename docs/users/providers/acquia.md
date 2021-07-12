@@ -26,6 +26,8 @@ ddev's Acquia integration pulls database and files from an existing project into
 9. Use `ddev pull acquia` to pull the project database and files.
 10. Optionally use `ddev push acquia` to push local files and database to Aquia. Note that `ddev push` is a command that can potentially damage your production site, so this is not recommended.
 
+**Warning for Apple M1 Users:** There is currently a bug in the linux `acli` command (or its dependencies) which causes it to SEGFAULT in normal use on the M1. As a result, you can't run `ddev pull acquia` on an M1 machine at this time.
+
 ### Usage
 
 `ddev pull acquia` will connect to the Acquia Cloud Platform to download database and files. To skip downloading and importing either file or database assets, use the `--skip-files` and `--skip-db` flags.

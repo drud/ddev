@@ -22,6 +22,8 @@ ddev's Platform.sh integration pulls database and files from an existing Platfor
 6. Run `ddev pull platform`. After you agree to the prompt, the current upstream database and files will be downloaded.
 7. Optionally use `ddev push platform` to push local files and database to Platform.sh. Note that `ddev push` is a command that can potentially damage your production site, so this is not recommended.
 
+**Warning for Apple M1 Users:** There is currently a bug in the linux `platform` command (or its dependencies) which causes it to SEGFAULT in normal use. As a result, you can't run `ddev pull platform` on an M1 machine at this time.
+
 ### Usage
 
 `ddev pull platform` will connect to Platform.sh to download database and files. To skip downloading and importing either file or database assets, use the `--skip-files` and `--skip-db` flags.

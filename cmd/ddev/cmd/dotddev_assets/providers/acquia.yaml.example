@@ -21,6 +21,8 @@
 # 9. Use `ddev pull acquia` to pull the project database and files.
 # 10. Optionally use `ddev push acquia` to push local files and database to Aquia. Note that `ddev push` is a command that can potentially damage your production site, so this is not recommended.
 
+# Warning for Apple M1 Users: There is currently a bug in the linux acli command (or its dependencies) which causes it to SEGFAULT in normal use. As a result, you can't run `ddev pull acquia` on an M1 machine at this time.
+
 # Debugging: Use `ddev exec acli command` and `ddev exec acli auth:info`
 # Make sure you remembered to `ddev auth ssh`
 
@@ -48,7 +50,7 @@ files_pull_command:
     # set -x   # You can enable bash debugging output by uncommenting
     ls /var/www/html/.ddev >/dev/null # This just refreshes stale NFS if possible
     pushd /var/www/html/.ddev/.downloads >/dev/null;
-    drush rsync --alias-path=~/.drush -q -y @${project_id}:%files ./files
+    drush -r docroot rsync --alias-path=~/.drush -q -y @${project_id}:%files ./files
 
 # push is a dangerous command. If not absolutely needed it's better to delete these lines.
 db_push_command:
