@@ -31,7 +31,7 @@ var DockerVersionConstraint = ">= 18.06.1-alpha1"
 // REMEMBER TO CHANGE docs/index.md if you touch this!
 // The constraint MUST HAVE a -pre of some kind on it for successful comparison.
 // See https://github.com/drud/ddev/pull/738.. and regression https://github.com/drud/ddev/issues/1431
-var DockerComposeVersionConstraint = "1.21.0-alpha1 - 1.999.0"
+var DockerComposeVersionConstraint = "1.25.0-alpha1 - 1.999.0"
 
 // DockerComposeFileFormatVersion is the compose version to be used
 var DockerComposeFileFormatVersion = "3.6"
